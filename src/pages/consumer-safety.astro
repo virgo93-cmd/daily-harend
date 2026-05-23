@@ -30,6 +30,8 @@ consumerArticles.sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) =
 					category={article.data.category}
 					readingTime={article.data.readingTime}
 					url={`/blog/${article.id}`}
+					/* FIX: GAMBAR SEKARANG DIOPER BIAR MUNCUL DI HALAMAN CONSUMER SAFETY */
+					image={article.data.image}
 				/>
 			))}
 		</section>
