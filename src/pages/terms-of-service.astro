@@ -1,0 +1,106 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout>
+	<main class="legal-container">
+		<article class="legal-content">
+			<h1>Terms of Service</h1>
+			<p class="last-updated">Last Updated: May 23, 2026</p>
+
+			<p>Welcome to Daily Harend!</p>
+			<p>These terms and conditions outline the rules and regulations for the use of Daily Harend's Website, located at our primary domain.</p>
+			<p>By accessing this website we assume you accept these terms and conditions. Do not continue to use Daily Harend if you do not agree to take all of the terms and conditions stated on this page.</p>
+
+			<h2>License</h2>
+			<p>Unless otherwise stated, Daily Harend and/or its licensors own the intellectual property rights for all material on Daily Harend. All intellectual property rights are reserved. You may access this from Daily Harend for your own personal use subjected to restrictions set in these terms and conditions.</p>
+			<p>You must not:</p>
+			<ul>
+				<li>Republish material from Daily Harend</li>
+				<li>Sell, rent or sub-license material from Daily Harend</li>
+				<li>Reproduce, duplicate or copy material from Daily Harend</li>
+				<li>Redistribute content from Daily Harend</li>
+			</ul>
+
+			<h2>Hyperlinking to our Content</h2>
+			<p>The following organizations may link to our Website without prior written approval:</p>
+			<ul>
+				<li>Government agencies;</li>
+				<li>Search engines;</li>
+				<li>News organizations;</li>
+				<li>Online directory distributors may link to our Website in the same manner as they hyperlink to the Websites of other listed businesses.</li>
+			</ul>
+
+			<h2>Content Liability</h2>
+			<p>We shall not be hold responsible for any content that appears on your Website. You agree to protect and defend us against all claims that is rising on your Website. No link(s) should appear on any Website that may be interpreted as libelous, obscene or criminal, or which infringes, otherwise violates, or advocates the infringement or other violation of, any third party rights.</p>
+
+			<h2>Disclaimer</h2>
+			<p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website.</p>
+		</article>
+	</main>
+</MainLayout>
+
+<style>
+	.legal-container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	.legal-content {
+		background-color: #ffffff;
+		padding: 2.5rem;
+		border-radius: 12px;
+		border: 1px solid #e5e7eb;
+		line-height: 1.7;
+		color: #374151;
+	}
+
+	.legal-content h1 {
+		margin: 0 0 0.5rem 0;
+		font-size: 2.25rem;
+		font-weight: 800;
+		color: #111827;
+		letter-spacing: -0.025em;
+	}
+
+	.last-updated {
+		color: #6b7280;
+		font-size: 0.875rem;
+		margin-bottom: 2rem;
+	}
+
+	.legal-content h2 {
+		margin: 2rem 0 1rem 0;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #111827;
+		letter-spacing: -0.025em;
+	}
+
+	.legal-content p {
+		margin: 0 0 1.25rem 0;
+	}
+
+	.legal-content ul {
+		margin: 0 0 1.5rem 0;
+		padding-left: 1.5rem;
+	}
+
+	.legal-content li {
+		margin-bottom: 0.5rem;
+	}
+
+	/* Responsif untuk HP */
+	@media (max-width: 640px) {
+		.legal-content {
+			padding: 1.5rem;
+		}
+		.legal-content h1 {
+			font-size: 1.75rem;
+		}
+		.legal-content h2 {
+			font-size: 1.25rem;
+		}
+	}
+</style>

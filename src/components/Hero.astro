@@ -1,0 +1,172 @@
+---
+---
+<section class="hero-container">
+	<div class="hero-content">
+		<div class="hero-badge">
+			<span class="pulse-icon"></span>
+			<span>Live Updates & Data-Driven Insights</span>
+		</div>
+		
+		<h1 class="hero-title">
+			Unbiased Insights on <br class="desktop-only" />
+			<span class="gradient-text">Health, Tech, and Consumer Safety.</span>
+		</h1>
+		
+		<p class="hero-desc">
+			Your daily dose of professional analysis, medical research breakthroughs, and global financial market trends calculated for the modern readers.
+		</p>
+
+		<div class="trending-tags">
+			<span class="tags-label">Popular Topics:</span>
+			<div class="tags-group">
+				<a href="/medical-news" class="tag-pill">Medical News</a>
+				<a href="/weight-loss" class="tag-pill">Weight Loss</a>
+				<a href="/consumer-safety" class="tag-pill">Consumer Safety</a>
+				<a href="/tech-finance" class="tag-pill">Tech & Finance</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero-container {
+		background-color: var(--card-bg);
+		border: 1px solid var(--border-color);
+		border-radius: 12px;
+		padding: 2rem 2rem; /* Padding dipangkas ekstrim biar ceper */
+		margin-bottom: 2rem;
+		box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.01), 0 2px 4px -1px rgba(15, 23, 42, 0.01);
+		display: flex;
+		justify-content: center;
+		width: 100%; /* KUNCI FIX: Memaksa hero mematuhi lebar kolom kiri induk halaman */
+		box-sizing: border-box;
+	}
+
+	.hero-content {
+		max-width: 800px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 1rem;
+		/* Jarak antar teks dan tombol lebih dirapatkan */
+	}
+
+	.hero-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		background-color: #f1f5f9;
+		color: #1e40af;
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 0.4rem 0.85rem;
+		border-radius: 9999px;
+		width: max-content;
+	}
+
+	.pulse-icon {
+		width: 6px;
+		height: 6px;
+		background-color: #dc2626;
+		border-radius: 50%;
+		display: inline-block;
+		animation: pulse 2s infinite;
+	}
+
+	@keyframes pulse {
+		0% { transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+		70% { transform: scale(1);
+		box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+		100% { transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+	}
+
+	.hero-title {
+		margin: 0;
+		font-size: 2.2rem; /* Font disesuaikan proporsinya */
+		line-height: 1.25;
+		font-weight: 900;
+		color: #1e3a8a;
+		letter-spacing: -0.03em;
+	}
+
+	.gradient-text {
+		background: linear-gradient(to right, #1e3a8a, #ea580c, #dc2626);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.hero-desc {
+		margin: 0;
+		color: var(--text-muted);
+		font-size: 1.05rem;
+		line-height: 1.5;
+		max-width: 700px;
+	}
+
+	.trending-tags {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-top: 0.25rem;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.tags-label {
+		font-size: 0.85rem;
+		font-weight: 700;
+		color: #1e3a8a;
+	}
+
+	.tags-group {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.tag-pill {
+		text-decoration: none;
+		background-color: #ffffff;
+		border: 1px solid var(--border-color);
+		color: var(--text-color);
+		font-size: 0.825rem;
+		font-weight: 600;
+		padding: 0.35rem 0.8rem;
+		border-radius: 6px;
+		transition: all 0.2s ease;
+	}
+
+	.tag-pill:hover {
+		background: linear-gradient(to right, #ea580c, #dc2626);
+		color: #ffffff;
+		border-color: #dc2626;
+		box-shadow: 0 2px 4px rgba(220, 38, 38, 0.15);
+	}
+
+	.desktop-only {
+		display: block;
+	}
+
+	@media (max-width: 768px) {
+		.hero-container {
+			padding: 1.5rem 1rem;
+			/* Padding mobile dibikin jauh lebih ringkas */
+			margin-bottom: 1.5rem;
+		}
+		.hero-title {
+			font-size: 1.7rem;
+		}
+		.hero-desc {
+			font-size: 0.95rem;
+		}
+		.desktop-only {
+			display: none;
+		}
+	}
+</style>

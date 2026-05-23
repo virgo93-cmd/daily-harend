@@ -1,0 +1,86 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout>
+	<main class="legal-container">
+		<article class="legal-content">
+			<h1>Privacy Policy</h1>
+			<p class="last-updated">Last Updated: May 23, 2026</p>
+
+			<p>At Daily Harend, accessible from our website, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Daily Harend and how we use it.</p>
+
+			<h2>Log Files</h2>
+			<p>Daily Harend follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks.</p>
+
+			<h2>Cookies and Web Beacons</h2>
+			<p>Like any other website, Daily Harend uses "cookies". These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
+
+			<h2>Google DoubleClick DART Cookie</h2>
+			<p>Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to our site and other sites on the internet.</p>
+
+			<h2>Privacy Policies</h2>
+			<p>Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on Daily Harend, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.</p>
+			<p>Note that Daily Harend has no access to or control over these cookies that are used by third-party advertisers.</p>
+
+			<h2>Children's Information</h2>
+			<p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
+		</article>
+	</main>
+</MainLayout>
+
+<style>
+	.legal-container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	.legal-content {
+		background-color: #ffffff;
+		padding: 2.5rem;
+		border-radius: 12px;
+		border: 1px solid #e5e7eb;
+		line-height: 1.7;
+		color: #374151;
+	}
+
+	.legal-content h1 {
+		margin: 0 0 0.5rem 0;
+		font-size: 2.25rem;
+		font-weight: 800;
+		color: #111827;
+		letter-spacing: -0.025em;
+	}
+
+	.last-updated {
+		color: #6b7280;
+		font-size: 0.875rem;
+		margin-bottom: 2rem;
+	}
+
+	.legal-content h2 {
+		margin: 2rem 0 1rem 0;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #111827;
+		letter-spacing: -0.025em;
+	}
+
+	.legal-content p {
+		margin: 0 0 1.25rem 0;
+	}
+
+	/* Responsif untuk HP */
+	@media (max-width: 640px) {
+		.legal-content {
+			padding: 1.5rem;
+		}
+		.legal-content h1 {
+			font-size: 1.75rem;
+		}
+		.legal-content h2 {
+			font-size: 1.25rem;
+		}
+	}
+</style>

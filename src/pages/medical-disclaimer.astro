@@ -1,0 +1,99 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout>
+	<main class="legal-container">
+		<article class="legal-content">
+			<h1>Medical Disclaimer</h1>
+			<p class="last-updated">Last Updated: May 23, 2026</p>
+
+			<div class="disclaimer-alert">
+				<p><strong>Important Notice:</strong> The information provided on Daily Harend is for general informational and educational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment.</p>
+			</div>
+
+			<h2>No Medical Advice</h2>
+			<p>The contents of Daily Harend, such as text, graphics, images, and other material contained on the website are for informational purposes only. Information found on this site is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+			<p>Never disregard professional medical advice or delay in seeking it because of something you have read on Daily Harend.</p>
+
+			<h2>No Doctor-Patient Relationship</h2>
+			<p>Your use of this website, including the implementation of any suggestions set forth in this website or the use of any resources available on this website, does not create a doctor-patient relationship between you and Daily Harend or any of its professionals.</p>
+
+			<h2>Fitness & Nutrition Information</h2>
+			<p>This website offers health, fitness, and nutritional information and is designed for educational purposes only. You should not rely on this information as a substitute for, nor does it replace, professional medical advice, diagnosis, or treatment. If you have any concerns or questions about your health, you should always consult with a physician or other healthcare professional.</p>
+
+			<h2>Limitation of Liability</h2>
+			<p>Daily Harend and its content creators are not liable or responsible for any advice, course of treatment, diagnosis, or any other information, services, or products that you obtain through this site. Reliance on any information provided by this website is solely at your own risk.</p>
+		</article>
+	</main>
+</MainLayout>
+
+<style>
+	.legal-container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	.legal-content {
+		background-color: #ffffff;
+		padding: 2.5rem;
+		border-radius: 12px;
+		border: 1px solid #e5e7eb;
+		line-height: 1.7;
+		color: #374151;
+	}
+
+	.legal-content h1 {
+		margin: 0 0 0.5rem 0;
+		font-size: 2.25rem;
+		font-weight: 800;
+		color: #111827;
+		letter-spacing: -0.025em;
+	}
+
+	.last-updated {
+		color: #6b7280;
+		font-size: 0.875rem;
+		margin-bottom: 2rem;
+	}
+
+	.disclaimer-alert {
+		background-color: #fef2f2;
+		border-left: 4px solid #ef4444;
+		padding: 1rem 1.5rem;
+		border-radius: 4px;
+		margin-bottom: 2rem;
+		color: #991b1b;
+		font-size: 0.95rem;
+	}
+
+	.disclaimer-alert p {
+		margin: 0;
+	}
+
+	.legal-content h2 {
+		margin: 2rem 0 1rem 0;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #111827;
+		letter-spacing: -0.025em;
+	}
+
+	.legal-content p {
+		margin: 0 0 1.25rem 0;
+	}
+
+	/* Responsif untuk HP */
+	@media (max-width: 640px) {
+		.legal-content {
+			padding: 1.5rem;
+		}
+		.legal-content h1 {
+			font-size: 1.75rem;
+		}
+		.legal-content h2 {
+			font-size: 1.25rem;
+		}
+	}
+</style>

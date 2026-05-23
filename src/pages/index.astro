@@ -1,17 +1,163 @@
 ---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/Hero.astro'; // Import komponen Hero baru
+import Headline from '../components/Headline.astro';
+import TrendingCard from '../components/TrendingCard.astro';
+import Sidebar from '../components/Sidebar.astro'; // IMPORT SIDEBAR LU DI SINI
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
+// Ambil semua artikel dari koleksi 'blog'
+const rawArticles = await getCollection('blog');
+
+// Fungsi helper sorting data berdasarkan tanggal terbaru
+function sortMyArticles(articles: CollectionEntry<'blog'>[]) {
+    return articles.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+}
+
+const allArticles = sortMyArticles(rawArticles);
+
+// Ambil artikel paling terbaru untuk dijadikan Headline Utama
+const headlineArticle = allArticles[0];
+
+// Ambil sisa artikel lainnya untuk daftar di bagian bawah
+const remainingArticles = allArticles.slice(1);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout 
+    title="Daily Harend - Latest Technology, Finance & Crypto Trends" 
+    description="Discover real-time insights, smart trading strategies, and financial hacks on Daily Harend. Stay updated with tech and crypto trends today."
+    type="website"
+>
+    <div class="main-content-layout">
+        
+        <div class="home-container">
+            <Hero />
+
+            {headlineArticle && (
+                <section class="headline-section">
+                    <Headline 
+                        title={headlineArticle.data.title}
+                        description={headlineArticle.data.description}
+                        pubDate={headlineArticle.data.pubDate}
+                        category={headlineArticle.data.category}
+                        url={`/blog/${headlineArticle.id}`}
+                        /* OPER PROPS GAMBAR DI SINI */
+                        image={headlineArticle.data.image}
+                    />
+                </section>
+            )}
+
+            <section class="trending-section">
+                <div class="section-title">
+                    <h2>Latest Articles</h2>
+                    <div class="title-line"></div>
+                </div>
+
+                <div class="trending-grid">
+                    {remainingArticles.length === 0 ? (
+                        <p class="no-articles">No more articles found.</p>
+                    ) : (
+                        remainingArticles.map((article) => (
+                            <TrendingCard 
+                                key={article.id}
+                                title={article.data.title}
+                                description={article.data.description}
+                                pubDate={article.data.pubDate}
+                                category={article.data.category}
+                                readingTime={article.data.readingTime}
+                                url={`/blog/${article.id}`}
+                                /* OPER PROPS GAMBAR DI SINI */
+                                image={article.data.image}
+                            />
+                        ))
+                    )}
+                </div>
+            </section>
+        </div>
+
+        <Sidebar />
+
+    </div>
+</MainLayout>
+
+<style>
+    /* Mengatur jarak vertikal antar komponen di kolom kiri */
+    .home-container {
+        display: flex;
+        flex-direction: column;
+        gap: 3.5rem;
+        width: 100%;
+    }
+
+    /* KOTAK INDUK UTAMA YANG MEMBAGI KIRI DAN KANAN MONITOR */
+    .main-content-layout {
+        display: flex;
+        flex-direction: column; /* Default di HP: bertumpuk ke bawah */
+        gap: 2.5rem;
+        width: 100%;
+    }
+
+    /* Section Title Style diselaraskan dengan Variabel Tema */
+    .section-title {
+        margin-bottom: 2rem;
+    }
+
+    .section-title h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text-color);
+        letter-spacing: -0.025em;
+    }
+
+    .title-line {
+        width: 60px;
+        height: 4px;
+        background-color: var(--accent-color);
+        border-radius: 2px;
+    }
+
+    /* Grid Layout Kartu */
+    .trending-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    /* Responsive Breakpoints Tablet */
+    @media (min-width: 640px) {
+        .trending-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* DI DESKTOP: STRUKTUR HORIZONTAL KESAMPING AKTIF DARI UJUNG ATAS */
+    @media (min-width: 1024px) {
+        .main-content-layout {
+            flex-direction: row; /* Paksa kolom kiri dan sidebar berjajar horizontal */
+            justify-content: space-between;
+            align-items: start;
+            gap: 4%;
+        }
+
+        /* Kolom kiri yang berisi Hero, Headline, dan artikel dibatasi hanya 68% */
+        .home-container {
+            width: 68%;
+            flex-shrink: 0;
+        }
+
+        /* Karena sisa ruang menyempit, isi grid artikel bawah pas disetel 2 kolom */
+        .trending-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .no-articles {
+        color: var(--text-muted);
+        font-style: italic;
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 2rem 0;
+    }
+</style>

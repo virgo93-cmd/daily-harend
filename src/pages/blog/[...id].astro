@@ -1,0 +1,178 @@
+---
+// src/pages/blog/[...id].astro
+import MainLayout from '../../layouts/MainLayout.astro';
+import Sidebar from '../../components/Sidebar.astro'; // 1. IMPORT SIDEBAR SECARA RESMI DI SINI
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+// Fungsi wajib Astro untuk memetakan semua jalur id subfolder lu
+export async function getStaticPaths() {
+    const articles = await getCollection('blog');
+    return articles.map((article) => ({
+        params: { id: article.id },
+        props: { article },
+    }));
+}
+
+interface Props {
+    article: CollectionEntry<'blog'>;
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article); // Cara render konten markdown terbaru di Astro v6
+
+// Format tampilan tanggal
+const formattedDate = new Date(article.data.pubDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+});
+---
+
+<MainLayout 
+    title={`${article.data.title} - Daily Harend`}
+    description={article.data.description}
+    image={article.data.image}
+    type="article"
+>
+    <div class="main-content-layout">
+        
+        <article class="post-container">
+            <header class="post-header">
+                <span class="post-category">{article.data.category}</span>
+                <h1 class="post-title">{article.data.title}</h1>
+                <div class="post-meta">
+                    <time>{formattedDate}</time>
+                    <span class="meta-dot">&bull;</span>
+                    <span>{article.data.readingTime}</span>
+                </div>
+                <p class="post-desc">{article.data.description}</p>
+            </header>
+
+            <div class="post-content">
+                <Content />
+            </div>
+        </article>
+
+        <Sidebar />
+
+    </div>
+</MainLayout>
+
+<style>
+    /* CSS BARU: MENGATUR STRUKTUR WADAH PEMBAGI UTAMA */
+    .main-content-layout {
+        display: flex;
+        flex-direction: column; /* Default HP: bertumpuk vertikal ke bawah */
+        gap: 2.5rem;
+        width: 100%;
+    }
+
+    .post-container {
+        width: 100%; /* Default mobile penuh */
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 0;
+        box-sizing: border-box;
+    }
+
+    .post-header {
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .post-category {
+        display: inline-block;
+        color: #2563eb;
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.75rem;
+    }
+
+    .post-title {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        font-weight: 800;
+        color: #111827;
+        margin: 0 0 1rem 0;
+        letter-spacing: -0.025em;
+    }
+
+    .post-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .meta-dot {
+        color: #d1d5db;
+    }
+
+    .post-desc {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        color: #4b5563;
+        margin: 0;
+    }
+
+    /* STYLING UNTUK ISI KONTEN MARKDOWN LU */
+    .post-content {
+        color: #1f2937;
+        font-size: 1.1rem;
+        line-height: 1.75;
+    }
+
+    .post-content :global(h2) {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 2rem 0 1rem 0;
+        letter-spacing: -0.02em;
+    }
+
+    .post-content :global(p) {
+        margin: 0 0 1.25rem 0;
+    }
+
+    .post-content :global(ul) {
+        margin: 0 0 1.25rem 0;
+        padding-left: 1.5rem;
+    }
+
+    .post-content :global(li) {
+        margin-bottom: 0.5rem;
+    }
+
+    /* KUNCI STRUKTUR DESKTOP: MEMAKSA LAYOUT BERJAJAR HORIZONTAL */
+    @media (min-width: 1024px) {
+        .main-content-layout {
+            flex-direction: row; /* Paksa artikel dan sidebar berjajar ke samping */
+            justify-content: space-between;
+            align-items: start;
+            gap: 4%;
+        }
+
+        /* Batasi lebar artikel penuh menjadi 68% agar muat disandingkan dengan sidebar */
+        .post-container {
+            width: 68%;
+            max-width: 100%; /* Override max-width 800px lawas biar fleksibel mengikuti 68% container luar */
+            margin: 0; /* Alirkan rata kiri */
+            padding-top: 0; /* Biar sejajar rata atas sama sidebar iklan */
+        }
+    }
+
+    @media (max-width: 640px) {
+        .post-title {
+            font-size: 1.85rem;
+        }
+        .post-desc {
+            font-size: 1.05rem;
+        }
+    }
+</style>

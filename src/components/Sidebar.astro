@@ -1,0 +1,119 @@
+---
+// src/components/Sidebar.astro
+---
+<aside class="sidebar-container">
+    <div class="sidebar-sticky">
+        
+        <div class="sidebar-label-wrapper">
+            <span class="sidebar-gradient-label">Join the Journey</span>
+        </div>
+        
+        <div class="binance-banner-box">
+            <a href="https://www.bmwweb.biz/register?ref=86332171" target="_blank" rel="noopener noreferrer" class="banner-link">
+                <img src="https://fefluvakyaqyjopgfyjd.supabase.co/storage/v1/object/public/blog-images/c7aebabf99b0b85e2afeea1e3614d6a1.jpeg" alt="Explore Crypto on Binance" class="banner-img" />
+            </a>
+        </div>
+
+        <div class="available-banner-box">
+            <a href="mailto:admin@dailyharend.com?subject=Inquiry%20About%20Sponsorship%20/%20Advertise%20on%20Daily%20Harend&body=Hi%20Admin,%0A%0AI%20am%20interested%20in%20buying%20the%20ad%20space%20on%20your%20sidebar.%20Please%20send%20me%20the%20pricing%20and%20details.%0A%0ABest%20regards," class="available-link">
+                <img src="https://fefluvakyaqyjopgfyjd.supabase.co/storage/v1/object/public/blog-images/Gemini_Generated_Image_sce0v4sce0v4sce0.png" alt="Ad Space Available" class="available-img" />
+            </a>
+        </div>
+
+    </div>
+</aside>
+
+<style>
+    .sidebar-container {
+        width: 100%; /* Default mobile penuh ke bawah */
+    }
+
+    .sidebar-sticky {
+        width: 100%;
+    }
+
+    /* WADAH UNTUK MENENGAKAN LABEL DI ATAS BANNER */
+    .sidebar-label-wrapper {
+        margin-bottom: 0.85rem !important;
+        display: flex !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+    }
+
+    /* KAPSUL GRADASI MODERN - DIPAKSA FORCE OLEH BROWSER VIA !IMPORTANT */
+    .sidebar-gradient-label {
+        font-size: 0.75rem !important;
+        font-weight: 800 !important;
+        color: #ffffff !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        background: linear-gradient(135deg, #1e3a8a, #ea580c, #dc2626) !important;
+        padding: 0.4rem 0.85rem !important;
+        border-radius: 9999px !important;
+        display: inline-block !important;
+        box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25) !important;
+    }
+
+    /* Kotak Banner Lu */
+    .binance-banner-box {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .binance-banner-box:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    }
+
+    /* KOTAK BANNER AVAILABLE ADS - DIPAKSA MARGIN ATAS BIAR GAK REKAT */
+    .available-banner-box {
+        width: 100%;
+        max-width: 320px;
+        margin: 1.5rem auto 0 auto !important; /* FIX JELAS: Jarak renggang tegas 1.5rem dari banner Binance */
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .available-banner-box:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    }
+
+    .banner-link, .available-link {
+        display: block;
+        width: 100%;
+    }
+
+    .banner-img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* KUNCI RASIO 9:16 PORTRAIT BANNER KEDUA */
+    .available-img {
+        width: 100%;
+        aspect-ratio: 9 / 16;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* KUNCI MUTLAK DESKTOP: MEMAKSA INDUK FLEX UNTUK STICKY MELAYANG */
+    @media (min-width: 1024px) {
+        .sidebar-container {
+            position: sticky;
+            top: 2rem;
+            width: 28%;
+            height: fit-content;
+        }
+    }
+</style>

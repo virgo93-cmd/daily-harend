@@ -1,0 +1,119 @@
+---
+// src/layouts/MainLayout.astro
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+// TERIMA PROPS DINAMIS DARI HALAMAN ARTIKEL UNTUK SEO
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+    canonicalUrl?: string;
+    type?: 'website' | 'article';
+}
+
+const {
+    title = "Daily Harend - Tech, Finance & Crypto Insights",
+    description = "Stay ahead with the latest trends in technology, finance, crypto hacks, and smart trading strategies.",
+    image = "https://fefluvakyaqyjopgfyjd.supabase.co/storage/v1/object/public/blog-images/c7aebabf99b0b85e2afeea1e3614d6a1.jpeg", // Default image pake banner binance lu
+    canonicalUrl = Astro.url.href,
+    type = "website"
+} = Astro.props;
+
+// SCHEMA MARKUP JSON-LD: Bahasa rahasia buat maksa Google paham jenis konten lu
+const schemaMarkup = type === 'article' ? {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": title,
+    "description": description,
+    "image": [image],
+    "datePublished": new Date().toISOString(), // Nanti bisa di-override tanggal asli artikel
+    "author": {
+        "@type": "Organization",
+        "name": "Daily Harend",
+        "url": Astro.url.origin
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Daily Harend",
+        "url": Astro.url.origin
+    }
+} : {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Daily Harend",
+    "url": Astro.url.origin,
+    "description": description
+};
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content={Astro.generator} />
+
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta name="robots" content="index, follow" />
+
+        <meta property="og:type" content={type} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:site_name" content="Daily Harend" />
+        <meta name="twitter:card" content="summary_large_image" />
+
+        <script type="application/ld+json" set:html={JSON.stringify(schemaMarkup)} />
+    </head>
+    <body>
+        <Header />
+
+        <div class="main-layout-wrapper">
+            <main class="main-container">
+                <slot />
+            </main>
+        </div>
+
+        <Footer />
+    </body>
+</html>
+
+<style is:global>
+    img {
+        max-width: 100%;
+        height: auto;
+        box-sizing: border-box;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+</style>
+
+<style>
+    .main-layout-wrapper {
+        width: 100%;
+        display: block; 
+    }
+
+    .main-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+        box-sizing: border-box;
+        display: block;
+    }
+
+    @media (min-width: 1024px) {
+        .main-container {
+            display: flow-root;
+        }
+    }
+</style>

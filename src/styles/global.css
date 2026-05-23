@@ -1,0 +1,46 @@
+/* src/styles/global.css */
+:root {
+    /* 1. WARNA LATAR UTAMA (CANVAS) */
+    --bg-color: #f8fafc;       /* Abu-abu porselen ultra-soft biar gak silau */
+    
+    /* 2. WARNA LATAR KOMPONEN */
+    --card-bg: #ffffff;        /* Putih murni buat kontras komponen */
+    
+    /* 3. SISTEM WARNA TEKS PREMIUM */
+    --text-color: #0f172a;     /* Slate Dark tajam untuk judul utama */
+    --text-muted: #475569;     /* Muted Slate untuk deskripsi & meta */
+    
+    /* 4. AKSEN DAN BORDER */
+    --accent-color: #3b82f6;   /* Digital Royal Blue modern untuk link/hover */
+    --border-color: #f1f5f9;   /* Garis pembatas super samar */
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* PERBAIKAN: Flexbox dihapus dari html & body agar position: sticky di dalam halaman bisa bekerja aktif */
+    -webkit-font-smoothing: antialiased;
+}
+
+/* KUNCI BARU: Pindahkan flexbox pembungkus halaman ke kelas wrapper layout utama bawaan lu */
+.main-layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+}
