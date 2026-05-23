@@ -1,10 +1,8 @@
 ---
-// src/layouts/MainLayout.astro
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
-// TERIMA PROPS DINAMIS DARI HALAMAN ARTIKEL UNTUK SEO
 interface Props {
     title?: string;
     description?: string;
@@ -16,19 +14,18 @@ interface Props {
 const {
     title = "Daily Harend - Tech, Finance & Crypto Insights",
     description = "Stay ahead with the latest trends in technology, finance, crypto hacks, and smart trading strategies.",
-    image = "https://fefluvakyaqyjopgfyjd.supabase.co/storage/v1/object/public/blog-images/c7aebabf99b0b85e2afeea1e3614d6a1.jpeg", // Default image pake banner binance lu
+    image = "https://fefluvakyaqyjopgfyjd.supabase.co/storage/v1/object/public/blog-images/c7aebabf99b0b85e2afeea1e3614d6a1.jpeg",
     canonicalUrl = Astro.url.href,
     type = "website"
 } = Astro.props;
 
-// SCHEMA MARKUP JSON-LD: Bahasa rahasia buat maksa Google paham jenis konten lu
 const schemaMarkup = type === 'article' ? {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": title,
     "description": description,
     "image": [image],
-    "datePublished": new Date().toISOString(), // Nanti bisa di-override tanggal asli artikel
+    "datePublished": new Date().toISOString(),
     "author": {
         "@type": "Organization",
         "name": "Daily Harend",
@@ -70,6 +67,8 @@ const schemaMarkup = type === 'article' ? {
         <meta name="twitter:card" content="summary_large_image" />
 
         <script type="application/ld+json" set:html={JSON.stringify(schemaMarkup)} />
+        
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1478743894328528" crossorigin="anonymous"></script>
     </head>
     <body>
         <Header />
