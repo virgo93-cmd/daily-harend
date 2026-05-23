@@ -6,7 +6,7 @@ author: "Daily Harend"
 image: "https://fefluvakyaqyjopgfyjd.supabase.co/storage/v1/object/public/blog-images/retatrutide-innovation.png"
 tags: ["Tech", "Finance", "Health", "Retatrutide"]
 category: "Medical News"
-readingTime: 5
+readingTime: "5"
 ---
 
 ## The Evolution of Obesity Management
