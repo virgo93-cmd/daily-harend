@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dailyharend.com/sitemap-index.xml
