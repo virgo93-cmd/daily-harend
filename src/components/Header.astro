@@ -1,309 +1,311 @@
 ---
 ---
 <div class="detik-logo-row">
-	<a href="/" class="logo-link">
-		<span class="logo-text">Daily<span class="gradient-com">Harend</span></span>
-	</a>
+    <a href="/" class="logo-link">
+        <span class="logo-text">Daily<span class="gradient-com">Harend</span></span>
+    </a>
 </div>
 
 <nav class="detik-nav-sticky">
-	<div class="nav-center-container">
-		<a href="/" class="sticky-mini-logo">
-			Daily<span class="gradient-com">Harend</span>
-		</a>
-		
-		<div class="nav-links-wrapper desktop-menu">
-			<a href="/" class="nav-link">Home</a>
-			<a href="/medical-news" class="nav-link">Medical News</a>
-			<a href="/weight-loss" class="nav-link">Weight Loss & Diet</a>
-			<a href="/consumer-safety" class="nav-link">Consumer Safety</a>
-			<a href="/tech-finance" class="nav-link">Tech & Finance</a>
-		</div>
+    <div class="nav-center-container">
+        <a href="/" class="sticky-mini-logo">
+            Daily<span class="gradient-com">Harend</span>
+        </a>
+        
+        <div class="nav-links-wrapper desktop-menu">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/medical-news" class="nav-link">Medical News</a>
+            <a href="/weight-loss" class="nav-link">Weight Loss & Diet</a>
+            <a href="/consumer-safety" class="nav-link">Consumer Safety</a>
+            <a href="/tech-finance" class="nav-link">Tech & Finance</a>
+            <a href="/entertainment" class="nav-link">Entertainment</a>
+        </div>
 
-		<button class="hamburger-btn" id="menu-toggle" aria-label="Toggle Menu">
-			<span class="bar"></span>
-			<span class="bar"></span>
-			<span class="bar"></span>
-		</button>
-	</div>
+        <button class="hamburger-btn" id="menu-toggle" aria-label="Toggle Menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </div>
 </nav>
 
 <div class="mobile-menu-overlay" id="mobile-menu">
-	<div class="mobile-menu-content">
-		<div class="mobile-menu-header">
-			<span class="logo-text">Daily<span class="gradient-com">Harend</span></span>
-			<button class="close-btn" id="menu-close">&times;</button>
-		</div>
-		<div class="mobile-nav-links">
-			<a href="/" class="mobile-nav-link">Home</a>
-			<a href="/medical-news" class="mobile-nav-link">Medical News</a>
-			<a href="/weight-loss" class="mobile-nav-link">Weight Loss & Diet</a>
-			<a href="/consumer-safety" class="mobile-nav-link">Consumer Safety</a>
-			<a href="/tech-finance" class="mobile-nav-link">Tech & Finance</a>
-		</div>
-	</div>
+    <div class="mobile-menu-content">
+        <div class="mobile-menu-header">
+            <span class="logo-text">Daily<span class="gradient-com">Harend</span></span>
+            <button class="close-btn" id="menu-close">&times;</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="/" class="mobile-nav-link">Home</a>
+            <a href="/medical-news" class="mobile-nav-link">Medical News</a>
+            <a href="/weight-loss" class="mobile-nav-link">Weight Loss & Diet</a>
+            <a href="/consumer-safety" class="mobile-nav-link">Consumer Safety</a>
+            <a href="/tech-finance" class="mobile-nav-link">Tech & Finance</a>
+            <a href="/entertainment" class="mobile-nav-link">Entertainment</a>
+        </div>
+    </div>
 </div>
 
 <style>
-	/* ---------- STYLE AREA LOGO ATAS (NORMAL) ---------- */
-	.detik-logo-row {
-		width: 100%;
-		height: 80px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: #ffffff;
-		border-bottom: 1px solid var(--border-color);
-	}
+    /* ---------- STYLE AREA LOGO ATAS (NORMAL) ---------- */
+    .detik-logo-row {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        border-bottom: 1px solid var(--border-color);
+    }
 
-	.logo-link {
-		text-decoration: none;
-	}
+    .logo-link {
+        text-decoration: none;
+    }
 
-	.logo-text {
-		font-family: system-ui, -apple-system, sans-serif;
-		font-size: 2.3rem;
-		font-weight: 900;
-		color: #1e3a8a;
-		letter-spacing: -0.04em;
-	}
+    .logo-text {
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 2.3rem;
+        font-weight: 900;
+        color: #1e3a8a;
+        letter-spacing: -0.04em;
+    }
 
-	.gradient-com {
-		background: linear-gradient(to right, #ea580c, #dc2626);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-	}
+    .gradient-com {
+        background: linear-gradient(to right, #ea580c, #dc2626);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
-	/* ---------- STYLE NAVBAR UTAMA ---------- */
-	.detik-nav-sticky {
-		position: -webkit-sticky;
-		position: sticky;
-		top: 0;
-		z-index: 9999;
-		width: 100%;
-		background: linear-gradient(to right, #1e40af, #1d4ed8);
-		height: 48px;
-		display: flex;
-		align-items: center;
-		transition: all 0.25s ease;
-	}
+    /* ---------- STYLE NAVBAR UTAMA ---------- */
+    .detik-nav-sticky {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        z-index: 9999;
+        width: 100%;
+        background: linear-gradient(to right, #1e40af, #1d4ed8);
+        height: 48px;
+        display: flex;
+        align-items: center;
+        transition: all 0.25s ease;
+    }
 
-	.nav-center-container {
-		width: 100%;
-		max-width: 1200px;
-		margin: 0 auto;
-		display: flex;
-		align-items: center;
-		justify-content: center; /* Desktop awal: Rata Tengah */
-		padding: 0 1.5rem;
-		position: relative;
-	}
+    .nav-center-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Desktop awal: Rata Tengah */
+        padding: 0 1.5rem;
+        position: relative;
+    }
 
-	.nav-links-wrapper {
-		display: flex;
-		gap: 2rem;
-	}
+    .nav-links-wrapper {
+        display: flex;
+        gap: 2rem;
+    }
 
-	.nav-link {
-		text-decoration: none;
-		color: #ffffff;
-		font-size: 0.925rem;
-		font-weight: 700;
-		white-space: nowrap;
-		transition: all 0.2s ease;
-	}
+    .nav-link {
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 0.925rem;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+    }
 
-	.sticky-mini-logo {
-		display: none;
-		text-decoration: none;
-		font-family: system-ui, -apple-system, sans-serif;
-		font-size: 1.4rem;
-		font-weight: 900;
-		color: #1e3a8a;
-		letter-spacing: -0.04em;
-		margin-right: 2rem;
-	}
+    .sticky-mini-logo {
+        display: none;
+        text-decoration: none;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: #1e3a8a;
+        letter-spacing: -0.04em;
+        margin-right: 2rem;
+    }
 
-	/* ---------- HAMBURGER BUTTON STYLE ---------- */
-	.hamburger-btn {
-		display: none; /* Sembunyikan di desktop */
-		flex-direction: column;
-		justify-content: space-between;
-		width: 24px;
-		height: 18px;
-		background: transparent;
-		border: none;
-		cursor: pointer;
-		padding: 0;
-		z-index: 10000;
-	}
+    /* ---------- HAMBURGER BUTTON STYLE ---------- */
+    .hamburger-btn {
+        display: none; /* Sembunyikan di desktop */
+        flex-direction: column;
+        justify-content: space-between;
+        width: 24px;
+        height: 18px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10000;
+    }
 
-	.hamburger-btn .bar {
-		width: 100%;
-		height: 3px;
-		background-color: #ffffff; /* Putih pas background biru */
-		border-radius: 2px;
-		transition: all 0.25s ease;
-	}
+    .hamburger-btn .bar {
+        width: 100%;
+        height: 3px;
+        background-color: #ffffff; /* Putih pas background biru */
+        border-radius: 2px;
+        transition: all 0.25s ease;
+    }
 
-	/* ---------- MOBILE OVERLAY MENU ---------- */
-	.mobile-menu-overlay {
-		position: fixed;
-		top: 0;
-		left: -100%; /* Sembunyikan di luar layar kiri */
-		width: 100%;
-		height: 100vh;
-		background-color: rgba(15, 23, 42, 0.6); /* Backdrop blur semi transparan */
-		backdrop-filter: blur(4px);
-		z-index: 10000;
-		transition: left 0.3s ease;
-	}
+    /* ---------- MOBILE OVERLAY MENU ---------- */
+    .mobile-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: -100%; /* Sembunyikan di luar layar kiri */
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(15, 23, 42, 0.6); /* Backdrop blur semi transparan */
+        backdrop-filter: blur(4px);
+        z-index: 10000;
+        transition: left 0.3s ease;
+    }
 
-	.mobile-menu-overlay.is-open {
-		left: 0; /* Geser masuk ke dalam layar */
-	}
+    .mobile-menu-overlay.is-open {
+        left: 0; /* Geser masuk ke dalam layar */
+    }
 
-	.mobile-menu-content {
-		width: 80%;
-		max-width: 300px;
-		height: 100%;
-		background-color: #ffffff;
-		padding: 1.5rem;
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
-	}
+    .mobile-menu-content {
+        width: 80%;
+        max-width: 300px;
+        height: 100%;
+        background-color: #ffffff;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+    }
 
-	.mobile-menu-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		border-bottom: 1px solid var(--border-color);
-		padding-bottom: 1rem;
-	}
+    .mobile-menu-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1rem;
+    }
 
-	.mobile-menu-header .logo-text {
-		font-size: 1.5rem;
-	}
+    .mobile-menu-header .logo-text {
+        font-size: 1.5rem;
+    }
 
-	.close-btn {
-		background: transparent;
-		border: none;
-		font-size: 2rem;
-		color: #475569;
-		cursor: pointer;
-		line-height: 1;
-		padding: 0;
-	}
+    .close-btn {
+        background: transparent;
+        border: none;
+        font-size: 2rem;
+        color: #475569;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+    }
 
-	.mobile-nav-links {
-		display: flex;
-		flex-direction: column;
-		gap: 1.25rem;
-	}
+    .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
 
-	.mobile-nav-link {
-		text-decoration: none;
-		color: #0f172a;
-		font-size: 1.1rem;
-		font-weight: 700;
-		padding: 0.5rem 0;
-		border-bottom: 1px solid #f1f5f9;
-	}
+    .mobile-nav-link {
+        text-decoration: none;
+        color: #0f172a;
+        font-size: 1.1rem;
+        font-weight: 700;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
 
-	/* ---------- RESPONSIVE BREAKPOINT (MOBILE) ---------- */
-	@media (max-width: 960px) {
-		.desktop-menu {
-			display: none; /* Matikan menu teks panjang di mobile */
-		}
+    /* ---------- RESPONSIVE BREAKPOINT (MOBILE) ---------- */
+    @media (max-width: 960px) {
+        .desktop-menu {
+            display: none; /* Matikan menu teks panjang di mobile */
+        }
 
-		.hamburger-btn {
-			display: flex; /* Nyalakan tombol hamburger */
-		}
+        .hamburger-btn {
+            display: flex; /* Nyalakan tombol hamburger */
+        }
 
-		.nav-center-container {
-			justify-content: space-between; /* Lempar logo ke kiri, hamburger ke kanan */
-		}
-	}
+        .nav-center-container {
+            justify-content: space-between; /* Lempar logo ke kiri, hamburger ke kanan */
+        }
+    }
 </style>
 
 <script>
-	// 1. LOGIKA INTERSECTION OBSERVER (STICKY BACKGROUND TOGGLE)
-	const navSticky = document.querySelector('.detik-nav-sticky');
-	const logoRow = document.querySelector('.detik-logo-row');
-	const hamburgerBars = document.querySelectorAll('.hamburger-btn .bar');
-	
-	const observer = new IntersectionObserver(
-		([entry]) => {
-			if (!entry.isIntersecting) {
-				navSticky?.classList.add('nav-sticky-active');
-				// Ubah garis hamburger jadi hitam saat navbar berubah putih
-				hamburgerBars.forEach(bar => (bar as HTMLElement).style.backgroundColor = '#1e293b');
-			} else {
-				navSticky?.classList.remove('nav-sticky-active');
-				// Kembalikan garis hamburger jadi putih saat navbar kembali biru
-				hamburgerBars.forEach(bar => (bar as HTMLElement).style.backgroundColor = '#ffffff');
-			}
-		},
-		{ threshold: 0 }
-	);
+    // 1. LOGIKA INTERSECTION OBSERVER (STICKY BACKGROUND TOGGLE)
+    const navSticky = document.querySelector('.detik-nav-sticky');
+    const logoRow = document.querySelector('.detik-logo-row');
+    const hamburgerBars = document.querySelectorAll('.hamburger-btn .bar');
+    
+    const observer = new IntersectionObserver(
+        ([entry]) => {
+            if (!entry.isIntersecting) {
+                navSticky?.classList.add('nav-sticky-active');
+                // Ubah garis hamburger jadi hitam saat navbar berubah putih
+                hamburgerBars.forEach(bar => (bar as HTMLElement).style.backgroundColor = '#1e293b');
+            } else {
+                navSticky?.classList.remove('nav-sticky-active');
+                // Kembalikan garis hamburger jadi putih saat navbar kembali biru
+                hamburgerBars.forEach(bar => (bar as HTMLElement).style.backgroundColor = '#ffffff');
+            }
+        },
+        { threshold: 0 }
+    );
 
-	if (logoRow) observer.observe(logoRow);
+    if (logoRow) observer.observe(logoRow);
 
-	// 2. LOGIKA OPEN/CLOSE HAMBURGER OVERLAY
-	const menuToggle = document.getElementById('menu-toggle');
-	const menuClose = document.getElementById('menu-close');
-	const mobileMenu = document.getElementById('mobile-menu');
+    // 2. LOGIKA OPEN/CLOSE HAMBURGER OVERLAY
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuClose = document.getElementById('menu-close');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-	menuToggle?.addEventListener('click', () => {
-		mobileMenu?.classList.add('is-open');
-	});
+    menuToggle?.addEventListener('click', () => {
+        mobileMenu?.classList.add('is-open');
+    });
 
-	menuClose?.addEventListener('click', () => {
-		mobileMenu?.classList.remove('is-open');
-	});
+    menuClose?.addEventListener('click', () => {
+        mobileMenu?.classList.remove('is-open');
+    });
 
-	// Menutup menu jika user mengklik area luar menu (overlay kosong)
-	mobileMenu?.addEventListener('click', (e) => {
-		if (e.target === mobileMenu) {
-			mobileMenu.classList.remove('is-open');
-		}
-	});
+    // Menutup menu jika user mengklik area luar menu (overlay kosong)
+    mobileMenu?.addEventListener('click', (e) => {
+        if (e.target === mobileMenu) {
+            mobileMenu.classList.remove('is-open');
+        }
+    });
 </script>
 
 <style>
-	/* ---------- TAMPILAN PAS NAVBAR LAGI MENGUNCI (STICKY AKTIF) ---------- */
-	.detik-nav-sticky.nav-sticky-active {
-		background: #ffffff; /* Berubah jadi putih bersih premium ala detik */
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-		border-bottom: 1px solid #e2e8f0;
-	}
+    /* ---------- TAMPILAN PAS NAVBAR LAGI MENGUNCI (STICKY AKTIF) ---------- */
+    .detik-nav-sticky.nav-sticky-active {
+        background: #ffffff; /* Berubah jadi putih bersih premium ala detik */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid #e2e8f0;
+    }
 
-	/* Memunculkan mini logo di dalam barisan menu pas di-scroll */
-	.detik-nav-sticky.nav-sticky-active .sticky-mini-logo {
-		display: block;
-	}
+    /* Memunculkan mini logo di dalam barisan menu pas di-scroll */
+    .detik-nav-sticky.nav-sticky-active .sticky-mini-logo {
+        display: block;
+    }
 
-	/* TETEP MENGUNCI RATA TENGAH PAS DESKTOP STICKY */
-	.detik-nav-sticky.nav-sticky-active .nav-center-container {
-		justify-content: center; 
-	}
+    /* TETEP MENGUNCI RATA TENGAH PAS DESKTOP STICKY */
+    .detik-nav-sticky.nav-sticky-active .nav-center-container {
+        justify-content: center; 
+    }
 
-	/* Mengubah warna teks menu dari putih menjadi hitam slate pas background putih */
-	.detik-nav-sticky.nav-sticky-active .nav-link {
-		color: #1e293b;
-		font-size: 0.9rem;
-	}
+    /* Mengubah warna teks menu dari putih menjadi hitam slate pas background putih */
+    .detik-nav-sticky.nav-sticky-active .nav-link {
+        color: #1e293b;
+        font-size: 0.9rem;
+    }
 
-	.detik-nav-sticky.nav-sticky-active .nav-link:hover {
-		color: #1d4ed8;
-	}
+    .detik-nav-sticky.nav-sticky-active .nav-link:hover {
+        color: #1d4ed8;
+    }
 
-	/* Penyesuaian khusus mobile pas status sticky aktif */
-	@media (max-width: 960px) {
-		.detik-nav-sticky.nav-sticky-active .nav-center-container {
-			justify-content: space-between; /* Tetap seimbang kiri-kanan di layar HP */
-		}
-	}
+    /* Penyesuaian khusus mobile pas status sticky aktif */
+    @media (max-width: 960px) {
+        .detik-nav-sticky.nav-sticky-active .nav-center-container {
+            justify-content: space-between; /* Tetap seimbang kiri-kanan di layar HP */
+        }
+    }
 </style>
