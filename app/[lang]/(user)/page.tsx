@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import React from 'react'
 import HeroSlider from '@/app/[lang]/(user)/components/HeroSlider'
 import LatestInsights from '@/app/[lang]/(user)/components/LatestInsights'
