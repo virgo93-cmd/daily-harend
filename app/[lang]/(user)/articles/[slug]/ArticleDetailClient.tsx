@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import Link from 'next/link'
 import { Calendar, User, CheckCircle, ChevronRight, Image as ImageIcon, X, ChevronDown, Grid } from 'lucide-react'
+import Script from 'next/script' // <-- Ditambahkan dengan aman untuk load iklan Adsterra
 
 interface Author {
   name: string
@@ -643,6 +644,12 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
           </div>
         </div>
       )}
+
+      {/* Script Iklan Adsterra Social Bar - Dipasang dengan aman menggunakan strategi afterInteractive Next.js */}
+      <Script 
+        src="https://pl29845208.effectivecpmnetwork.com/d2/0b/97/d20b97b534a10ab9433e0ddd1e53e703.js"
+        strategy="afterInteractive"
+      />
     </main>
   )
 }
