@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -8,7 +9,7 @@ const geistSans = Geist({
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-geist-mono-",
   subsets: ["latin"],
 });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body className="min-h-full bg-slate-950 text-slate-100 flex flex-col">
         {children}
       </body>
+      <GoogleAnalytics gaId="G-QGMJ0PPKEP" />
     </html>
   );
 }
