@@ -3,8 +3,13 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import Link from 'next/link'
-import { Calendar, User, CheckCircle, ChevronRight, Image as ImageIcon, X, ChevronDown, Grid } from 'lucide-react'
-import Script from 'next/script' // <-- Ditambahkan dengan aman untuk load iklan Adsterra
+import { Calendar, User, CheckCircle, ChevronRight, Image as ImageIcon, X, ChevronDown, Grid, UserCheck } from 'lucide-react'
+import Script from 'next/script'
+
+// Import komponen global baru lo
+import SectorHubs from '../../components/SectorHubs'
+import EditorialPolicy from '../../components/EditorialPolicy'
+import EditorialBoard from '../../components/EditorialBoard'
 
 interface Author {
   name: string
@@ -140,40 +145,39 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
         setLoading(true)
         const suffix = lang && lang !== 'en' ? `_${lang}` : ''
 
-        const articleQuery = supabase
+        // Ambil data artikel utama dengan type-casting statis agar aman dari ParserError TypeScript
+        const { data: rawData, error: articleError } = await supabase
           .from('articles')
           .select(`
             id, 
             title,
-            title${suffix}, 
+            title_id, 
             slug, 
             summary,
-            summary${suffix}, 
+            summary_id, 
             content,
-            content${suffix}, 
+            content_id, 
             cover_image, 
             image_source, 
             created_at, 
             category_id,
             faq,
-            faq${suffix},
+            faq_id,
             authors ( name, role_title, short_bio, avatar_url ),
             reviewers ( name, role_title, short_bio, avatar_url ),
             fact_checkers ( name, role_title, short_bio, avatar_url )
-          `)
+          ` as any)
           .eq('slug', slug)
           .eq('status', 'published')
           .single()
 
-        const configQuery = supabase
+        const { data: configRes } = await supabase
           .from('site_config')
           .select('translations')
           .single()
 
-        const [articleRes, configRes] = await Promise.all([articleQuery, configQuery])
-
-        if (!configRes.error && configRes.data?.translations) {
-          const allTranslations = configRes.data.translations as any
+        if (configRes?.translations) {
+          const allTranslations = configRes.translations as any
           if (lang && lang !== 'en' && allTranslations[lang]) {
             setDict({ ...fallbackEn, ...allTranslations[lang] })
           } else {
@@ -181,23 +185,23 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
           }
         }
 
-        if (!articleRes.error && articleRes.data) {
-          const rawData = articleRes.data as any
+        if (!articleError && rawData) {
+          const rawArticleData = rawData as any
 
           const rawArticle: ArticleDetail = {
-            id: rawData.id,
-            title: rawData[`title${suffix}`] || rawData.title || '',
-            slug: rawData.slug,
-            summary: rawData[`summary${suffix}`] || rawData.summary,
-            content: rawData[`content${suffix}`] || rawData.content || '',
-            cover_image: rawData.cover_image,
-            image_source: rawData.image_source,
-            created_at: rawData.created_at,
-            category_id: rawData.category_id,
-            authors: rawData.authors as unknown as Author | null,
-            reviewers: rawData.reviewers as unknown as Reviewer | null,
-            fact_checkers: rawData.fact_checkers as unknown as FactChecker | null,
-            faq: (rawData[`faq${suffix}`] || rawData.faq) as unknown as FaqItem[] | null,
+            id: rawArticleData.id,
+            title: rawArticleData[`title${suffix}`] || rawArticleData.title || '',
+            slug: rawArticleData.slug,
+            summary: rawArticleData[`summary${suffix}`] || rawArticleData.summary,
+            content: rawArticleData[`content${suffix}`] || rawArticleData.content || '',
+            cover_image: rawArticleData.cover_image,
+            image_source: rawArticleData.image_source,
+            created_at: rawArticleData.created_at,
+            category_id: rawArticleData.category_id,
+            authors: rawArticleData.authors as unknown as Author | null,
+            reviewers: rawArticleData.reviewers as unknown as Reviewer | null,
+            fact_checkers: rawArticleData.fact_checkers as unknown as FactChecker | null,
+            faq: (rawArticleData[`faq${suffix}`] || rawArticleData.faq) as unknown as FaqItem[] | null,
           }
 
           setArticle(rawArticle)
@@ -211,60 +215,83 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
             setMainCategories(filteredMainCats)
           }
 
-          if (rawArticle.category_id) {
-            const { data: relatedData } = await supabase
+          // Ambil Related Articles dengan format query string murni
+          let { data: relatedData } = await supabase
+            .from('articles')
+            .select(`
+              id,
+              title,
+              title_id,
+              slug,
+              summary,
+              summary_id,
+              cover_image,
+              created_at,
+              categories ( id, name, slug, parent_id ),
+              authors ( name, role_title, short_bio, avatar_url ),
+              reviewers ( name, role_title, short_bio, avatar_url )
+            ` as any)
+            .eq('status', 'published')
+            .eq('category_id', rawArticle.category_id)
+            .neq('id', rawArticle.id)
+            .order('created_at', { ascending: false })
+            .limit(3)
+
+          // Fallback jika artikel se-kategori kosong
+          if (!relatedData || relatedData.length === 0) {
+            const { data: fallbackData } = await supabase
               .from('articles')
               .select(`
                 id,
                 title,
-                title${suffix},
+                title_id,
                 slug,
                 summary,
-                summary${suffix},
+                summary_id,
                 cover_image,
                 created_at,
                 categories ( id, name, slug, parent_id ),
                 authors ( name, role_title, short_bio, avatar_url ),
                 reviewers ( name, role_title, short_bio, avatar_url )
-              `)
-              .eq('category_id', rawArticle.category_id)
+              ` as any)
               .eq('status', 'published')
               .neq('id', rawArticle.id)
               .order('created_at', { ascending: false })
               .limit(3)
+            relatedData = fallbackData
+          }
 
-            if (relatedData) {
-              const mappedRelated: RelatedArticle[] = (relatedData as any[]).map((r) => {
-                const currentCat = r.categories
-                let parentObj = null
+          if (relatedData) {
+            const mappedRelated: RelatedArticle[] = (relatedData as any[]).map((r) => {
+              const currentCat = r.categories
+              let parentObj = null
 
-                if (currentCat && currentCat.parent_id) {
-                  const matchedParent = categoryMap.get(currentCat.parent_id)
-                  if (matchedParent) {
-                    parentObj = { name: matchedParent.name, slug: matchedParent.slug }
-                  }
+              if (currentCat && currentCat.parent_id) {
+                const matchedParent = categoryMap.get(currentCat.parent_id)
+                if (matchedParent) {
+                  parentObj = { name: matchedParent.name, slug: matchedParent.slug }
                 }
+              }
 
-                return {
-                  id: r.id,
-                  title: r[`title${suffix}`] || r.title || '',
-                  summary: r[`summary${suffix}`] || r.summary || null,
-                  slug: r.slug,
-                  cover_image: r.cover_image,
-                  created_at: r.created_at,
-                  categories: currentCat ? {
-                    id: currentCat.id,
-                    name: currentCat.name,
-                    slug: currentCat.slug,
-                    parent_id: currentCat.parent_id,
-                    parent: parentObj
-                  } : null,
-                  authors: r.authors as unknown as Author | null,
-                  reviewers: r.reviewers as unknown as Reviewer | null,
-                }
-              })
-              setRelatedArticles(mappedRelated)
-            }
+              return {
+                id: r.id,
+                title: r[`title${suffix}`] || r.title || '',
+                summary: r[`summary${suffix}`] || r.summary || null,
+                slug: r.slug,
+                cover_image: r.cover_image,
+                created_at: r.created_at,
+                categories: currentCat ? {
+                  id: currentCat.id,
+                  name: currentCat.name,
+                  slug: currentCat.slug,
+                  parent_id: currentCat.parent_id,
+                  parent: parentObj
+                } : null,
+                authors: r.authors as unknown as Author | null,
+                reviewers: r.reviewers as unknown as Reviewer | null,
+              }
+            })
+            setRelatedArticles(mappedRelated)
           }
 
           const parser = new DOMParser()
@@ -331,7 +358,10 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           
-          <aside className="hidden lg:block lg:col-span-3 sticky top-24 space-y-6 pr-1">
+          {/* ASIDE BARIS KIRI (DESKTOP STICKY) */}
+          <aside className="w-full lg:col-span-3 lg:sticky top-24 space-y-6 pr-1">
+            
+            {/* BOKS TOC */}
             <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm">
               <h3 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest border-b border-slate-200 pb-3 mb-4 font-bold">
                 {dict.toc}
@@ -352,74 +382,100 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
               )}
             </div>
 
+            {/* BOKS RELATED POSTS VERTIKAL RAMPING DI BAWAH TOC */}
             {relatedArticles.length > 0 && (
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm space-y-5">
                 <div>
-                  <span className="text-[8px] font-mono text-slate-400 uppercase tracking-widest font-bold block mb-0.5">
+                  <span className="text-[9px] font-mono text-slate-400 uppercase tracking-widest font-bold block mb-1">
                     Contextual Feed
                   </span>
-                  <h3 className="text-xs font-black text-slate-950 uppercase tracking-tight">
+                  <h3 className="text-base font-black text-slate-950 uppercase tracking-tight">
                     Related Insights
                   </h3>
                 </div>
 
-                <div className="space-y-4">
+                <div className="flex flex-col gap-6">
                   {relatedArticles.map((rel) => (
-                    <div 
+                    <article 
                       key={rel.id} 
-                      className="group/rel border border-slate-200 rounded-xl bg-white overflow-hidden shadow-xs hover:border-slate-400 transition-colors"
+                      className="group flex flex-col justify-between bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 min-h-[400px] w-full"
                     >
-                      <div className="w-full h-32 bg-slate-100 relative border-b border-slate-200">
-                        {rel.cover_image ? (
-                          <img src={rel.cover_image} alt="" className="w-full h-full object-cover group-hover/rel:scale-105 transition-transform duration-300" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-[7px] font-mono text-slate-400">NO IMG</div>
-                        )}
+                      <div>
+                        <div className="w-full h-40 bg-slate-50 border-b border-slate-200 overflow-hidden relative">
+                          {rel.cover_image ? (
+                            <img 
+                              src={rel.cover_image} 
+                              alt={rel.title} 
+                              className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-[10px] font-mono text-slate-400 uppercase">
+                              {dict.noCover}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="p-4 space-y-3">
+                          {rel.categories && (
+                            <div className="flex flex-wrap gap-1.5 items-center">
+                              {rel.categories.parent ? (
+                                <>
+                                  <span className="text-[9px] font-mono bg-slate-950 text-white uppercase tracking-widest px-2 py-0.5 rounded font-bold shadow-sm">
+                                    {rel.categories.parent.name}
+                                  </span>
+                                  <span className="text-[9px] font-mono bg-slate-100 text-slate-600 uppercase tracking-widest px-2 py-0.5 rounded font-bold border border-slate-200/60">
+                                    # {rel.categories.name}
+                                  </span>
+                                </>
+                              ) : (
+                                <span className="text-[9px] font-mono bg-slate-950 text-white uppercase tracking-widest px-2 py-0.5 rounded font-bold shadow-sm">
+                                  {rel.categories.name}
+                                </span>
+                              )}
+                            </div>
+                          )}
+
+                          <h2 className="font-black text-sm sm:text-base text-slate-950 line-clamp-2 leading-tight uppercase tracking-tight group-hover:text-slate-800 transition-colors">
+                            <Link href={`/${lang}/articles/${rel.slug}`}>
+                              {rel.title}
+                            </Link>
+                          </h2>
+
+                          {rel.summary && (
+                            <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed font-medium">
+                              {rel.summary}
+                            </p>
+                          )}
+                        </div>
                       </div>
 
-                      <div className="p-3.5 space-y-2">
-                        {rel.categories && (
-                          <div className="flex flex-wrap gap-1 items-center">
-                            {rel.categories.parent ? (
-                              <>
-                                <span className="text-[7.5px] font-mono bg-slate-950 text-white uppercase tracking-widest px-1.5 py-0.5 rounded font-bold shadow-sm">
-                                  {rel.categories.parent.name}
-                                </span>
-                                <span className="text-[7.5px] font-mono bg-slate-100 text-slate-600 uppercase tracking-widest px-1.5 py-0.5 rounded font-bold border border-slate-200/60">
-                                  # {rel.categories.name}
-                                </span>
-                              </>
-                            ) : (
-                              <span className="text-[7.5px] font-mono bg-slate-950 text-white uppercase tracking-widest px-1.5 py-0.5 rounded font-bold shadow-sm">
-                                {rel.categories.name}
-                              </span>
-                            )}
+                      <div className="p-4 pt-0">
+                        <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                          <div className="text-[10px] font-bold text-slate-950">
+                            <span className="text-[8px] font-mono text-slate-400 uppercase tracking-wider block font-normal leading-none mb-0.5">{dict.published}</span>
+                            {new Date(rel.created_at).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric'
+                            })}
                           </div>
-                        )}
 
-                        <h4 className="font-extrabold text-[11px] text-slate-950 leading-tight uppercase group-hover/rel:text-slate-800 transition-colors break-words">
-                          <Link href={`/${lang}/articles/${rel.slug}`}>{rel.title}</Link>
-                        </h4>
-                        
-                        <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between">
-                          <span className="text-[7.5px] font-mono text-slate-400">
-                            {new Date(rel.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                          </span>
                           <Link 
-                            href={`/${lang}/articles/${rel.slug}`} 
-                            className="text-[8.5px] font-mono font-bold text-slate-950 hover:underline uppercase tracking-wider"
+                            href={`/${lang}/articles/${rel.slug}`}
+                            className="bg-slate-950 hover:bg-slate-800 text-white text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg transition-colors shadow-sm"
                           >
-                            READ MORE
+                            {dict.readMore}
                           </Link>
                         </div>
                       </div>
-                    </div>
+                    </article>
                   ))}
                 </div>
               </div>
             )}
           </aside>
 
+          {/* KOLOM UTAMA KANAN */}
           <div className="lg:col-span-9 bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 shadow-sm space-y-6 sm:space-y-8">
             
             <div className="space-y-3 border-b border-slate-200 pb-5 sm:pb-6">
@@ -502,7 +558,7 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
                     <img src={article.fact_checkers.avatar_url} className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-slate-300 shadow-sm" alt="" />
                   ) : (
                     <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center text-slate-600">
-                      <CheckCircle className="w-4 h-4" />
+                      <UserCheck className="w-4 h-4" />
                     </div>
                   )}
                   <div>
@@ -541,6 +597,7 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
               dangerouslySetInnerHTML={{ __html: getInjectedContent() }}
             />
 
+            {/* BOKS FAQ BAWAAN ASLI LO */}
             {article.faq && article.faq.length > 0 && (
               <div className="pt-8 sm:pt-10 border-t border-slate-200 space-y-4">
                 <h2 className="text-lg sm:text-xl md:text-2xl font-black text-slate-950 uppercase tracking-tight">
@@ -567,6 +624,7 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
               </div>
             )}
 
+            {/* BOKS DISCLAIMER BAWAAN ASLI LO */}
             <div className="pt-8 sm:pt-10 border-t border-slate-200">
               <div className="p-4 sm:p-5 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row gap-3 items-start text-left">
                 <div className="bg-slate-950 text-white rounded-lg p-2 flex items-center justify-center shrink-0">
@@ -583,6 +641,7 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
               </div>
             </div>
 
+            {/* BOKS EXPLORE SECTORS BAWAAN ASLI LO */}
             {mainCategories.length > 0 && (
               <div className="pt-8 sm:pt-10 border-t border-slate-200 space-y-4">
                 <div className="flex items-center gap-2">
@@ -604,6 +663,14 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
                 </div>
               </div>
             )}
+
+            {/* SEKSI TAMBAHAN SESUAI PROMPT LO */}
+            <EditorialPolicy />
+
+            <EditorialBoard />
+
+            {/* FIX: Dipanggil bersih tanpa passing prop lang agar tidak memicu error IntrinsicAttributes */}
+            <SectorHubs />
 
           </div>
         </div>
@@ -645,7 +712,6 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
         </div>
       )}
 
-      {/* Script Iklan Adsterra Social Bar - Dipasang dengan aman menggunakan strategi afterInteractive Next.js */}
       <Script 
         src="https://pl29845208.effectivecpmnetwork.com/d2/0b/97/d20b97b534a10ab9433e0ddd1e53e703.js"
         strategy="afterInteractive"
