@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Daily Harend",
   description: "Advanced Personal Finance Platform",
+  other: {
+    'p:domain_verify': '12977425e3f604bdfbc41d40440d1725',
+  },
 };
 
 export default function RootLayout({
