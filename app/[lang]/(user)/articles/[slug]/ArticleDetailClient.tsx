@@ -114,10 +114,12 @@ const fallbackEn: UiDictionary = {
 interface ClientProps {
   slug: string
   lang: string
+  initialArticleData: ArticleDetail // Menampung data langsung dari Server Component (page.tsx)
 }
 
-export default function ArticleDetailClient({ slug, lang }: ClientProps) {
-  const [article, setArticle] = useState<ArticleDetail | null>(null)
+export default function ArticleDetailClient({ slug, lang, initialArticleData }: ClientProps) {
+  // Gunakan data dari server sebagai state awal agar robot Google langsung membaca isi konten utuh
+  const [article, setArticle] = useState<ArticleDetail | null>(initialArticleData)
   const [relatedArticles, setRelatedArticles] = useState<RelatedArticle[]>([])
   const [mainCategories, setMainCategories] = useState<CategoryData[]>([])
   const [toc, setToc] = useState<TocItem[]>([])
@@ -137,40 +139,33 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
 
   const supabase = createClient()
 
+  // Generate Table of Contents (TOC) dari artikel server-side secara langsung saat mount
+  useEffect(() => {
+    if (initialArticleData?.content) {
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(initialArticleData.content, 'text/html')
+      const headings = doc.querySelectorAll('h2, h3')
+      const tocItems: TocItem[] = []
+
+      headings.forEach((heading, idx) => {
+        const id = heading.id || `node-id-${idx}`
+        heading.id = id
+        tocItems.push({ id, text: heading.textContent || '' })
+      })
+
+      setToc(tocItems)
+    }
+  }, [initialArticleData])
+
   useEffect(() => {
     if (!slug) return
 
-    const fetchArticleAndConfig = async () => {
+    const fetchConfigAndRelations = async () => {
       try {
         setLoading(true)
         const suffix = lang && lang !== 'en' ? `_${lang}` : ''
 
-        // Ambil data artikel utama dengan type-casting statis agar aman dari ParserError TypeScript
-        const { data: rawData, error: articleError } = await supabase
-          .from('articles')
-          .select(`
-            id, 
-            title,
-            title_id, 
-            slug, 
-            summary,
-            summary_id, 
-            content,
-            content_id, 
-            cover_image, 
-            image_source, 
-            created_at, 
-            category_id,
-            faq,
-            faq_id,
-            authors ( name, role_title, short_bio, avatar_url ),
-            reviewers ( name, role_title, short_bio, avatar_url ),
-            fact_checkers ( name, role_title, short_bio, avatar_url )
-          ` as any)
-          .eq('slug', slug)
-          .eq('status', 'published')
-          .single()
-
+        // 1. Ambil data konfigurasi translasi situs
         const { data: configRes } = await supabase
           .from('site_config')
           .select('translations')
@@ -185,27 +180,8 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
           }
         }
 
-        if (!articleError && rawData) {
-          const rawArticleData = rawData as any
-
-          const rawArticle: ArticleDetail = {
-            id: rawArticleData.id,
-            title: rawArticleData[`title${suffix}`] || rawArticleData.title || '',
-            slug: rawArticleData.slug,
-            summary: rawArticleData[`summary${suffix}`] || rawArticleData.summary,
-            content: rawArticleData[`content${suffix}`] || rawArticleData.content || '',
-            cover_image: rawArticleData.cover_image,
-            image_source: rawArticleData.image_source,
-            created_at: rawArticleData.created_at,
-            category_id: rawArticleData.category_id,
-            authors: rawArticleData.authors as unknown as Author | null,
-            reviewers: rawArticleData.reviewers as unknown as Reviewer | null,
-            fact_checkers: rawArticleData.fact_checkers as unknown as FactChecker | null,
-            faq: (rawArticleData[`faq${suffix}`] || rawArticleData.faq) as unknown as FaqItem[] | null,
-          }
-
-          setArticle(rawArticle)
-
+        // 2. Ambil kategori dan related insights menggunakan ID kategori dari server data
+        if (initialArticleData) {
           const { data: allCats } = await supabase.from('categories').select('id, name, slug, parent_id')
           let categoryMap = new Map()
           
@@ -215,7 +191,6 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
             setMainCategories(filteredMainCats)
           }
 
-          // Ambil Related Articles dengan format query string murni
           let { data: relatedData } = await supabase
             .from('articles')
             .select(`
@@ -232,12 +207,11 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
               reviewers ( name, role_title, short_bio, avatar_url )
             ` as any)
             .eq('status', 'published')
-            .eq('category_id', rawArticle.category_id)
-            .neq('id', rawArticle.id)
+            .eq('category_id', initialArticleData.category_id)
+            .neq('id', initialArticleData.id)
             .order('created_at', { ascending: false })
             .limit(3)
 
-          // Fallback jika artikel se-kategori kosong
           if (!relatedData || relatedData.length === 0) {
             const { data: fallbackData } = await supabase
               .from('articles')
@@ -255,7 +229,7 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
                 reviewers ( name, role_title, short_bio, avatar_url )
               ` as any)
               .eq('status', 'published')
-              .neq('id', rawArticle.id)
+              .neq('id', initialArticleData.id)
               .order('created_at', { ascending: false })
               .limit(3)
             relatedData = fallbackData
@@ -293,19 +267,6 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
             })
             setRelatedArticles(mappedRelated)
           }
-
-          const parser = new DOMParser()
-          const doc = parser.parseFromString(rawArticle.content, 'text/html')
-          const headings = doc.querySelectorAll('h2, h3')
-          const tocItems: TocItem[] = []
-
-          headings.forEach((heading, idx) => {
-            const id = heading.id || `node-id-${idx}`
-            heading.id = id
-            tocItems.push({ id, text: heading.textContent || '' })
-          })
-
-          setToc(tocItems)
         }
       } catch (err) {
         console.error('Failed to resolve tactical localized payload:', err)
@@ -314,8 +275,8 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
       }
     }
 
-    fetchArticleAndConfig()
-  }, [slug, lang])
+    fetchConfigAndRelations()
+  }, [slug, lang, initialArticleData])
 
   const getInjectedContent = () => {
     if (!article) return ''
@@ -332,7 +293,8 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
     setOpenFaqIndex(openFaqIndex === index ? null : index)
   }
 
-  if (loading) {
+  // Jika data awal dari server sudah ada, bypass screen loading untuk bot SEO/AdSense
+  if (loading && !article) {
     return (
       <main className="w-full min-h-screen bg-white flex items-center justify-center">
         <div className="text-[11px] font-mono text-slate-800 tracking-widest uppercase animate-pulse">
@@ -555,7 +517,7 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
                   className="flex items-center gap-3 cursor-pointer group hover:opacity-80 transition-opacity"
                 >
                   {article.fact_checkers.avatar_url ? (
-                    <img src={article.fact_checkers.avatar_url} className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-slate-300 shadow-sm" alt="" />
+                    <img src={article.fact_checkers.avatar_url} className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-slate-200 shadow-sm" alt="" />
                   ) : (
                     <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center text-slate-600">
                       <UserCheck className="w-4 h-4" />
@@ -669,7 +631,6 @@ export default function ArticleDetailClient({ slug, lang }: ClientProps) {
 
             <EditorialBoard />
 
-            {/* FIX: Dipanggil bersih tanpa passing prop lang agar tidak memicu error IntrinsicAttributes */}
             <SectorHubs />
 
           </div>
